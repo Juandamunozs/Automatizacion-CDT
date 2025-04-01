@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from service.service import investigar_cdt
-from model.model import CDTRequest
+from schema.schema import CDTRequest
 import time
 from typing import Dict
 from module.time.time import calcular_fecha_futura, formatear_segundos

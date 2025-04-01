@@ -5,6 +5,7 @@ from service.servicio_investigar.bancos_dinamicos.bancoDavivienda import bancoDa
 from service.servicio_investigar.bancos_dinamicos.bancoBbva import bancoBbva
 from service.servicio_investigar.bancos_dinamicos.bancoCajaSocial import bancoCajaSocial
 from service.servicio_investigar.bancos_dinamicos.bancoFinandina import bancoFinandina
+from service.servicio_investigar.bancos_dinamicos.bancoItau import bancoItau
 from module.formatear_datos.formatear_datos import  monto_inicial
 
 def investigaciones_cdt(days, amount, email, driver):
@@ -22,6 +23,7 @@ def investigaciones_cdt(days, amount, email, driver):
     res_banco_bbva = None
     res_banco_caja_social = None
     res_banco_finandina = None
+    res_banco_itau = None
 
     # Intentar obtener los resultados de davivienda
     intentos_davivienda = 0
@@ -84,7 +86,7 @@ def investigaciones_cdt(days, amount, email, driver):
         try:
             res_banco_caja_social = bancoCajaSocial(days, amount, email, driver)
         except Exception as e:
-            print(f"Error al buscar el CDT de bbva {e}")
+            print(f"Error al buscar el CDT de caja social {e}")
             intentos_banco_caja_social += 1
             if intentos_banco_caja_social< max_intentos:
                 print("Reintentando...")
@@ -95,9 +97,20 @@ def investigaciones_cdt(days, amount, email, driver):
         try:
             res_banco_finandina = bancoFinandina(days, amount, email, driver)
         except Exception as e:
-            print(f"Error al buscar el CDT de bbva {e}")
+            print(f"Error al buscar el CDT de finandina {e}")
             intentos_banco_finandina += 1
             if intentos_banco_finandina< max_intentos:
+                print("Reintentando...")
+
+    # Intentar obtener los resultados de banco ibau
+    intentos_banco_itau = 0
+    while res_banco_itau is None and intentos_banco_itau< max_intentos:
+        try:
+            res_banco_itau= bancoItau(days, amount, email, driver)
+        except Exception as e:
+            print(f"Error al buscar el CDT de itau {e}")
+            intentos_banco_itau += 1
+            if intentos_banco_itau < max_intentos:
                 print("Reintentando...")
         
     # Devolver los resultados
@@ -108,7 +121,8 @@ def investigaciones_cdt(days, amount, email, driver):
         "Banco_davivienda": res_banco_davivienda,
         "Banco_bbva": res_banco_bbva,
         "Banco_caja_social": res_banco_caja_social,
-        "Banco_finandina": res_banco_finandina
+        "Banco_finandina": res_banco_finandina,
+        "Banco_itau": res_banco_itau
     }
 
     return res

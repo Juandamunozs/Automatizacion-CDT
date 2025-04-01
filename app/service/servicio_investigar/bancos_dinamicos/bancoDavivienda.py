@@ -183,7 +183,7 @@ def bancoDavivienda(days, amount, email, driver):
     except Exception as e:
         print(f"Error al dar clic al botón de simular: {e}")
 
-    time.sleep(3)
+    time.sleep(1)
 
     try:
         # Esperar a que el elemento de la ganancia estimada esté presente

@@ -28,5 +28,5 @@ def investigar_cdt(days, amount, email):
     except Exception as e:
         driver.quit() 
         print("Error al abrir el navegador: ", e)
-        return "Las credenciales son incorrectas o el controlador de Chrome no se abrió correctamente."
+        return f"Error al abrir el controlador de chrome: {res_investigacion}"
     
